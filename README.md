@@ -25,3 +25,30 @@ AWS is used by large companies for it's range of benefits, including:
 - LinkedIn
 - Facebook
 - BBC
+
+## Types of computing
+- Public Cloud
+  - Online, easily accessible
+- Private Cloud / On prem (on the premises)
+  - Offline, secure
+- Hybrid (cloud and on premises)
+  - Mix between public and private
+  - Used in sectors such as banking for security
+
+## Scaling
+- Autoscaling (automatically changes based on demand)
+- Scale up, improve existing resources/servers
+- Scale out, buy more resources/servers
+
+## Making AWS server
+### Naming convention
+Organisation, name, task (eg. Eng84 Jordan app)
+### Security
+- Security group works as firewall for instance on machine
+- Set specific IP to be able to access
+- Keys can be required in addition to an accepted IP
+### Architecture
+#### Monolithic architecture
+Traditional unified model all in one place. User interface and data access code are combined into a single program from a single platform. Self-contained and independent.
+#### Microservices
+Arranged an application as a collection of loosely coupled services. Fine-grained and lightweight protocols.
