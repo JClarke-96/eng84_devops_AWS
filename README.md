@@ -67,8 +67,14 @@ Arranged an application as a collection of loosely coupled services. Fine-graine
 - Choose key value pair for access
 
 ### Project deployment
+- `ssh -i "DevOpsStudent.pem" ubuntu@ec2-52-18-48-212.eu-west-1.compute.amazonaws.com` to run VM
+
+#### Automation
 - `scp -i ~/.ssh/DevOpsStudent.pem -r app/ ubuntu@ip:~/app/` while in app folder of project
 - `scp -i ~/.ssh/DevOpsStudent.pem -r app/ ubuntu@ip:~/provision.sh` in environment to copy automation
+`wget "http://ftp.de.debian.org/debian/pool/main/d/dos2unix/dos2unix_6.0.4-1_amd64.deb"` download dos2unix
+`sudo dpkg -i dos2unix_6.0.4-1_amd64.deb` install dos2unix
+`dos2unix db_provision.sh` convert dos file to unix
 - `sudo ./provision.sh` to run automation
 - `npm install` to correctly install npm
 - `nodejs app.js` to run the app on the cloud
