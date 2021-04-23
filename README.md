@@ -55,19 +55,39 @@ Arranged an application as a collection of loosely coupled services. Fine-graine
 
 ## Cloud computing
 ### Create an AWS server
+#### Create VPC & Internet Gateway
+- Create VPC named `eng84_jordan_vpc`
+- IPv4 CIDR block `X.X.Y.Z/16`
+	- `X.X` refers to the VPC
+	- `Y` is the subnet
+	- `Z` is the specific device
+	- `/16` means look at only the first 16 bits (of 32), so ONLY the VPC
+- Create Internet Gateway
+- `eng84_jordan_gateway`
+- Attach Internet Gateway to VPC
+
+#### Create subnet
+- Create subnets with names `eng84_jordan_app` and `eng84_jordan_db`
+- IPv4 CIDR block `X.X.Y.Z/24`
+	- Same as above meanings
+	- `Y` must be different for each subnet
+	- `/24` as we want the first 24 bits to inclue subnet
+- Auto-assign IP `enable` for public subnet
+
+#### Create EC2 instance
 - `Launch instance` to create the instance
 - Choose desired virtual machine `Ubuntu 16.04`
 - `t2 micro` instance type
-- Select desired subnet `devops student`
-- Auto-assign IP `enable`
-- Add tag as name of machine `Key: Name`, `Value: eng84_jordan_use`
+- Select desired VPC and subnet
+- Add tag for name of subnet
 - Security groups name `eng84_jordan_use_sg`
 - `Type: `SSH`, Source `My IP`
 - Confirm details and `launch`
 - Choose key value pair for access
 
 ### Project deployment
-- `ssh -i "DevOpsStudent.pem" ubuntu@ec2-52-18-48-212.eu-west-1.compute.amazonaws.com` to run VM
+#### Open virtual machine
+- `ssh -i "DevOpsStudent.pem" ubuntu@ip` to run VM
 
 #### Automation
 - `scp -i ~/.ssh/DevOpsStudent.pem -r app/ ubuntu@ip:~/app/` while in app folder of project
