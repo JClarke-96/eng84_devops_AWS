@@ -53,6 +53,25 @@ Traditional unified model all in one place. User interface and data access code 
 #### Microservices
 Arranged an application as a collection of loosely coupled services. Fine-grained and lightweight protocols.
 
+### AWS info
+#### VPC
+Virtual Private Cloud allows you to launch AWS resources in an isolated virtual network, such as EC2 instances.
+
+#### Security Group
+Security group acts as a virtual firewall for an EC2 instance to control incoming and outgoing traffic.
+
+#### Subnet
+A subnet is a logical subdivision of an IP network
+
+#### Route Tables
+Contains a set of rules called routes which are used to determine where network traffic from a subnet or gateway is directed.
+
+#### Internet Gateway
+Provide a target in VPC route tables for internet-routable traffic and perform network address translation (NAT) for instances that have a public IPv4 address
+
+#### NACL
+A Network ACL controlls traffic to or from a subnet according to inbound and outbound rules. Additional network level security
+
 ## Cloud computing
 ### Create an AWS server
 #### Create VPC & Internet Gateway
@@ -100,19 +119,19 @@ Arranged an application as a collection of loosely coupled services. Fine-graine
 	- `sudo dpkg -i dos2unix_6.0.4-1_amd64.deb` install dos2unix
 	- `dos2unix db_provision.sh` convert dos file to unix
 - `sudo nano provision.sh` to open
-	- `sudo echo "server {
-    listen 80;
-
-    server_name _;
-
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host \$host;
-        proxy_cache_bypass \$http_upgrade;
-    }
+`sudo echo "server {<br>
+	listen 80;<br>
+	<br>
+	server_name _;<br>
+	<br>
+	location / {<br>
+		proxy_pass http://localhost:3000;<br>
+        proxy_http_version 1.1;<br>
+        proxy_set_header Upgrade \$http_upgrade;<br>
+        proxy_set_header Connection 'upgrade';<br>
+        proxy_set_header Host \$host;<br>
+        proxy_cache_bypass \$http_upgrade;<br>
+    }<br>
 }" | sudo tee /etc/nginx/sites-available/default`
 - `sudo ./provision.sh` to run automation
 - `npm install` to correctly install npm
@@ -127,4 +146,3 @@ Arranged an application as a collection of loosely coupled services. Fine-graine
 - `sudo echo "export DB_HOST=mongodb://private_ip:27017/posts" >> ~/.bashrc`
 - `source ~/.bashrc`
 - `nodejs seed.js` in seeds to run seed
-- 
