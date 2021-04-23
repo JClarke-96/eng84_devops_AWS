@@ -65,6 +65,7 @@ Arranged an application as a collection of loosely coupled services. Fine-graine
 - Create Internet Gateway
 - `eng84_jordan_gateway`
 - Attach Internet Gateway to VPC
+- Create root table for VPC
 
 #### Create subnet
 - Create subnets with names `eng84_jordan_app` and `eng84_jordan_db`
@@ -73,6 +74,7 @@ Arranged an application as a collection of loosely coupled services. Fine-graine
 	- `Y` must be different for each subnet
 	- `/24` as we want the first 24 bits to inclue subnet
 - Auto-assign IP `enable` for public subnet
+- Add subnet connections to VPC root table
 
 #### Create EC2 instance
 - `Launch instance` to create the instance
@@ -81,21 +83,48 @@ Arranged an application as a collection of loosely coupled services. Fine-graine
 - Select desired VPC and subnet
 - Add tag for name of subnet
 - Security groups name `eng84_jordan_use_sg`
-- `Type: `SSH`, Source `My IP`
+	- Inbound rule with `Type: `SSH`, Source `My IP` to SSH into machine
+	- Inbound rule with `Type: HTTP | Source 0.0.0.0/0` if public for internet access
 - Confirm details and `launch`
 - Choose key value pair for access
 
 ### Project deployment
 #### Automation
 - `scp -i ~/.ssh/DevOpsStudent.pem -r app/ ubuntu@ip:~/app/` while in app folder of project
-- `scp -i ~/.ssh/DevOpsStudent.pem -r app/ ubuntu@ip:~/provision.sh` in environment to copy automation
+- `scp -i ~/.ssh/DevOpsStudent.pem -r app/ ubuntu@ip:~/environment` in environment to copy automation
 
-#### Open virtual machine
+#### Open virtual machine and run app
 - `ssh -i "DevOpsStudent.pem" ubuntu@ip` to run VM
 - Convert dos2unix
 	- `wget "http://ftp.de.debian.org/debian/pool/main/d/dos2unix/dos2unix_6.0.4-1_amd64.deb"` download dos2unix
 	- `sudo dpkg -i dos2unix_6.0.4-1_amd64.deb` install dos2unix
 	- `dos2unix db_provision.sh` convert dos file to unix
+- `sudo nano provision.sh` to open
+	- `sudo echo "server {
+    listen 80;
+
+    server_name _;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade \$http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host \$host;
+        proxy_cache_bypass \$http_upgrade;
+    }
+}" | sudo tee /etc/nginx/sites-available/default`
 - `sudo ./provision.sh` to run automation
 - `npm install` to correctly install npm
 - `nodejs app.js` to run the app on the cloud
+
+#### Work with database
+- Add inbound rules for database to accept all from the public IP
+- Need to SSH into private instance using public instance as a proxy
+- `ssh -i ~/.ssh/DevOpsStudent.pem -o ProxyCommand="ssh -i ~/.ssh/DevOpsStudent.pem -W %h:%p ubuntu@app_ip" ubuntu@private_ip`
+- Add temp rules to access the database to setup
+	- Inbound rule for security group `Type: HTTP | Source: 0.0.0.0/0`
+- `sudo echo "export DB_HOST=mongodb://private_ip:27017/posts" >> ~/.bashrc`
+- `source ~/.bashrc`
+- `nodejs seed.js` in seeds to run seed
+- 
