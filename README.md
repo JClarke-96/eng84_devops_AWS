@@ -119,7 +119,7 @@ A Network ACL controlls traffic to or from a subnet according to inbound and out
 	- `sudo dpkg -i dos2unix_6.0.4-1_amd64.deb` install dos2unix
 	- `dos2unix db_provision.sh` convert dos file to unix
 - `sudo nano provision.sh` to open
-`sudo echo "server {<br>
+sudo echo "server {<br>
 	listen 80;<br>
 	<br>
 	server_name _;<br>
@@ -132,7 +132,7 @@ A Network ACL controlls traffic to or from a subnet according to inbound and out
         proxy_set_header Host \$host;<br>
         proxy_cache_bypass \$http_upgrade;<br>
     }<br>
-}" | sudo tee /etc/nginx/sites-available/default`
+}" | sudo tee /etc/nginx/sites-available/default
 - `sudo ./provision.sh` to run automation
 - `npm install` to correctly install npm
 - `nodejs app.js` to run the app on the cloud
