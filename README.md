@@ -55,13 +55,13 @@ Arranged an application as a collection of loosely coupled services. Fine-graine
 
 ### AWS info
 #### VPC
-Virtual Private Cloud allows you to launch AWS resources in an isolated virtual network, such as EC2 instances.
+Virtual Private Cloud used to control a virtual network. Enables you to launch AWS resources in an isolated virtual network, such as EC2 instances.
 
 #### Security Group
 Security group acts as a virtual firewall for an EC2 instance to control incoming and outgoing traffic.
 
 #### Subnet
-A subnet is a logical subdivision of an IP network
+A subnet is a logical subdivision of an IP network, a single subnet can have multiple ED2 instances.
 
 #### Route Tables
 Contains a set of rules called routes which are used to determine where network traffic from a subnet or gateway is directed.
@@ -70,7 +70,7 @@ Contains a set of rules called routes which are used to determine where network 
 Provide a target in VPC route tables for internet-routable traffic and perform network address translation (NAT) for instances that have a public IPv4 address
 
 #### NACL
-A Network ACL controlls traffic to or from a subnet according to inbound and outbound rules. Additional network level security
+A Network ACL controls traffic to or from a subnet according to inbound and outbound rules. Additional (stateless) network level security.
 
 ## Cloud computing
 ### Create an AWS server
@@ -85,6 +85,25 @@ A Network ACL controlls traffic to or from a subnet according to inbound and out
 - `eng84_jordan_gateway`
 - Attach Internet Gateway to VPC
 - Create root table for VPC
+
+#### Create security groups
+
+#### Create public NACL rules
+- Inbound
+	- 100 allows inbound HTTP 80 traffic from any IPv4
+	- 110 allows inbound SSH 22 traffic from network over internet
+	- 120 allows inbound return traffic from hosts on internet that respond to requests from subnet - TCP 1024-65535
+- Outbound
+	- 100 allow outbound HTTP port 80
+	- 110 CIDR block allow 27017 for outbound Mongo DB server, destination subnet IP
+	- 120 allow short lived ports between 1024-65535
+
+#### Create private NACL rules
+- Inbound
+	- 100 allow port 27017 from public security group
+	- 110 allow SSH from IP
+- Outbound
+	- Allow all outbound
 
 #### Create subnet
 - Create subnets with names `eng84_jordan_app` and `eng84_jordan_db`
@@ -102,7 +121,7 @@ A Network ACL controlls traffic to or from a subnet according to inbound and out
 - Select desired VPC and subnet
 - Add tag for name of subnet
 - Security groups name `eng84_jordan_use_sg`
-	- Inbound rule with `Type: `SSH`, Source `My IP` to SSH into machine
+	- Inbound rule with `Type: "SSH", Source "My IP"` to SSH into machine
 	- Inbound rule with `Type: HTTP | Source 0.0.0.0/0` if public for internet access
 - Confirm details and `launch`
 - Choose key value pair for access
@@ -138,7 +157,7 @@ sudo echo "server {<br>
 - `nodejs app.js` to run the app on the cloud
 
 #### Work with database
-- Add inbound rules for database to accept all from the public IP
+- Add inbound rules for database to accept all from the public IP/App security group
 - Need to SSH into private instance using public instance as a proxy
 - `ssh -i ~/.ssh/DevOpsStudent.pem -o ProxyCommand="ssh -i ~/.ssh/DevOpsStudent.pem -W %h:%p ubuntu@app_ip" ubuntu@private_ip`
 - Add temp rules to access the database to setup
