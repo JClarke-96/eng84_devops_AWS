@@ -77,6 +77,7 @@ Used to access a private instance that is not connected to the Internet directly
 
 ## Cloud computing
 ![alt text](https://trello-attachments.s3.amazonaws.com/603d18a548d66563a0707ac8/6080098145f54271d3cbcb46/0dd0819e753e8824916432f875838049/AWS_deployment_networking_security.png)
+![alt text](https://github.com/conjectures/eng84_cloud_computing/raw/main/guide/media/tier2_bastion.png)
 ### Create an AWS server
 #### Create VPC & Internet Gateway
 - Create VPC named `eng84_jordan_vpc`
@@ -152,11 +153,11 @@ sudo echo "server {
 	
 	location / {
 		proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host \$host;
-        proxy_cache_bypass \$http_upgrade;
+    	proxy_http_version 1.1;
+    	proxy_set_header Upgrade \$http_upgrade;
+    	proxy_set_header Connection 'upgrade';
+    	proxy_set_header Host \$host;
+    	proxy_cache_bypass \$http_upgrade;
     }
 }" | sudo tee /etc/nginx/sites-available/default
 ```
@@ -174,3 +175,31 @@ sudo echo "server {
 - `sudo echo "export DB_HOST=mongodb://private_ip:27017/posts" >> ~/.bashrc`
 - `source ~/.bashrc`
 - `nodejs seed.js` in seeds to run seed
+
+## What is S3?
+S3 is a simple storage service provided by AWS, used to store and retrieve data at any time from around the world.
+### Benefits of S3
+### Who uses S3?
+### S3 Prerequisites
+- Running EC2 instance
+- AWS keys and secret key to talk with S3
+- SSH into the EC2 instance
+
+### Using S3
+#### AWSCLI
+- `sudo apt-get update -y`
+- `sudo apt-get install python -y`
+- `sudo apt-get install awscli -y`
+- `aws configure`
+	- Access key
+	- Secret key
+	- Region name
+	- `json`
+- `aws s3 ls` to list contents for s3 server
+
+#### Using buckets
+- `aws s3 mb s3://eng84jordans3 --region eu-west-1` to make bucket
+- `aws s3 cp filename s3://eng84jordans3` to copy file to bucket
+- `aws s3 sync s3://eng84jordans3 folder` download contents of bucket to folder
+- `aws s3 rm s3://eng84jordans3/filename` deletes file from bucket
+- `aws s3 rb s3://eng84jordans3` to delete empty bucket
