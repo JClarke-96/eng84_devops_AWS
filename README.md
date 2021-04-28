@@ -72,7 +72,11 @@ Provide a target in VPC route tables for internet-routable traffic and perform n
 #### NACL
 A Network ACL controls traffic to or from a subnet according to inbound and outbound rules. Additional (stateless) network level security.
 
+#### Bastion instance
+Used to access a private instance that is not connected to the Internet directly.
+
 ## Cloud computing
+![alt text](https://trello-attachments.s3.amazonaws.com/603d18a548d66563a0707ac8/6080098145f54271d3cbcb46/0dd0819e753e8824916432f875838049/AWS_deployment_networking_security.png)
 ### Create an AWS server
 #### Create VPC & Internet Gateway
 - Create VPC named `eng84_jordan_vpc`
@@ -87,6 +91,9 @@ A Network ACL controls traffic to or from a subnet according to inbound and outb
 - Create root table for VPC
 
 #### Create security groups
+- Security group name `eng84_jordan_public_sg`
+	- Inbound rule with `Type: "SSH", Source "My IP"` to SSH into machine
+	- Inbound rule with `Type: HTTP | Source 0.0.0.0/0` if public for internet access
 
 #### Create public NACL rules
 - Inbound
@@ -120,9 +127,7 @@ A Network ACL controls traffic to or from a subnet according to inbound and outb
 - `t2 micro` instance type
 - Select desired VPC and subnet
 - Add tag for name of subnet
-- Security groups name `eng84_jordan_use_sg`
-	- Inbound rule with `Type: "SSH", Source "My IP"` to SSH into machine
-	- Inbound rule with `Type: HTTP | Source 0.0.0.0/0` if public for internet access
+- Select security group
 - Confirm details and `launch`
 - Choose key value pair for access
 
