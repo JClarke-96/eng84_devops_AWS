@@ -203,3 +203,21 @@ S3 is a simple storage service provided by AWS, used to store and retrieve data 
 - `aws s3 sync s3://eng84jordans3 folder` download contents of bucket to folder
 - `aws s3 rm s3://eng84jordans3/filename` deletes file from bucket
 - `aws s3 rb s3://eng84jordans3` to delete empty bucket
+
+## What is Boto3?
+Boto3 is a Python SDK (Software Development Kit) for AWS and allows you to directly create, update, and delete AWS resources from Python scripts.
+
+### Using Boto3
+- `pip install boto3` install boto3 in Python IDE
+- Add code to Python script to use AWS S3, print bucket names, and upload a new file to a bucket
+```
+import boto3
+s3 = boto3.resource('s3')
+
+for bucket in s3.buckets.all():
+	print(bucket.name)
+
+data = open('test.jpg', 'rb')
+s3.Bucket('my-bucket').put_object(Key='test.jpg', Body=data)
+```
+
