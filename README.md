@@ -229,10 +229,12 @@ for bucket in s3.buckets.all():
 `s3_resource.create_bucket(Bucket=BUCKET_NAME, CreateBucketConfiguration={'LocationConstraint': 'PREFERRED_REGION'})` to create a bucket
 - Upload a file to the bucket
 	- Using object instance
+
 ```
 s3_resource.Object(BUCKET_NAME, FILE_NAME).upload_file(
     Filename=FILE_NAME)
 ```
+
 	- Using a bucket instance
 
 ```
@@ -241,8 +243,8 @@ s3_resource.Bucket(BUCKET_NAME).upload_file(
 ```
 
 	- Using a client instance
-```
 
+```
 s3_resource.meta.client.upload_file(
     Filename=FILE_NAME, Bucket=BUCKET_NAME,
     Key=FILE_NAME)
