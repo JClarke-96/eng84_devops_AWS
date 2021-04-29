@@ -234,12 +234,15 @@ s3_resource.Object(BUCKET_NAME, FILE_NAME).upload_file(
     Filename=FILE_NAME)
 ```
 	- Using a bucket instance
+
 ```
 s3_resource.Bucket(BUCKET_NAME).upload_file(
     Filename=FILE_NAME, Key=FILE_NAME)
 ```
+
 	- Using a client instance
 ```
+
 s3_resource.meta.client.upload_file(
     Filename=FILE_NAME, Bucket=BUCKET_NAME,
     Key=FILE_NAME)
@@ -247,11 +250,14 @@ s3_resource.meta.client.upload_file(
 
 ### Using files in buckets
 - Download an object from the bucket
+
 ```
 s3_resource.Object(BUCKET_NAME, FILE_NAME).download_file(
     f'/tmp/{FILE_NAME}')
 ```
+
 - Copy an object from one bucket to another
+
 ```
 def copy_to_bucket(FROM_BUCKET_NAME, TO_BUCKET_NAME, FILE_NAME):
     copy_source = {
@@ -262,4 +268,5 @@ def copy_to_bucket(FROM_BUCKET_NAME, TO_BUCKET_NAME, FILE_NAME):
 
 copy_to_bucket(FROM_BUCKET_NAME, TO_BUCKET_NAME, FILE_NAME)
 ```
+
 - `s3_resource.Object(BUCKET_NAME, FILE_NAME).delete()` to delete an object from a bucket
