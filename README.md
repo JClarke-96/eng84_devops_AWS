@@ -207,68 +207,67 @@ S3 is a simple storage service provided by AWS, used to store and retrieve data 
 ## What is Boto3?
 Boto3 is a Python SDK (Software Development Kit) for AWS and allows you to directly create, update, and delete AWS resources from Python scripts.
 
-### Using Boto3
-- `pip install boto3` install boto3 in Python IDE terminal
-- Setup default credentials and region for Boto3 to interact with AWS account
-	- `touch ~/.aws/credentials` to create a credentials file
-		- `aws_access_key_id = ACCESS_KEY_ID`
-		- `aws_secret_access_key = SECRET_ACCESS_KEY`
-	- `touch ~/.aws/config`
-		- `region = PREFERRED_REGION`
+### Python Boto3 commands for S3
+#### Initial setup for commands
 - `import boto3` to import Boto 3 as a package
 - Boto3 offers resource (higher-level object-oriented access) and client (low-level access) options
-	- `s3_resource = boto3.resource('s3')` to connect to high-level interface
-	- `s3_client = boto3.client('s3')` to connect to client interface
-- Print the name of all buckets in S3 server
+	- `s3 = boto3.resource('s3')` to connect to high-level interface
+	- `s3 = boto3.client('s3')` to connect to client interface
+- `bucket_name = 'eng84_jordan_boto3'`
+- `file_name = 'file_name'`
+- Print all buckets in S3 to test connection
 ```
 for bucket in s3.buckets.all():
 	print(bucket.name)
 ```
 
-### Uploading a file
-`s3_resource.create_bucket(Bucket=BUCKET_NAME, CreateBucketConfiguration={'LocationConstraint': 'PREFERRED_REGION'})` to create a bucket
+#### Using buckets
+- Create a bucket
+`s3_resource.create_bucket(Bucket='bucket_name', CreateBucketConfiguration={'LocationConstraint': 'PREFERRED_REGION'})`
+- Delete a bucket
+`s3.Bucket(bucket_name).delete()`
+
+#### Using files
 - Upload a file to the bucket
 	- Using object instance
 
 	```
-	s3_resource.Object(BUCKET_NAME, FILE_NAME).upload_file(
-    	Filename=FILE_NAME)
+	s3_resource.Object(bucket_name, file_name).upload_file(
+    	Filename=file_name)
 	```
 
 	- Using a bucket instance
 
 	```
-	s3_resource.Bucket(BUCKET_NAME).upload_file(
-    	Filename=FILE_NAME, Key=FILE_NAME)
+	s3_resource.Bucket('bucket_name').upload_file(Filename=file_name, Key=file_name)
 	```
 
 	- Using a client instance
 
 	```
 	s3_resource.meta.client.upload_file(
-    	Filename=FILE_NAME, Bucket=BUCKET_NAME,
-    	Key=FILE_NAME)
+    	Filename=file_name, Bucket=bucket_name,
+    	Key=file_name)
 	```
 
-### Using files in buckets
-- Download an object from the bucket
-
-```
-s3_resource.Object(BUCKET_NAME, FILE_NAME).download_file(
-    f'/tmp/{FILE_NAME}')
-```
+- Download a file from the bucket
+`s3.Bucket(bucket_name).download_file(Filename=file_name, Key=file_name')`
 
 - Copy an object from one bucket to another
-
 ```
-def copy_to_bucket(FROM_BUCKET_NAME, TO_BUCKET_NAME, FILE_NAME):
+def copy_to_bucket(FROM_BUCKET_NAME, TO_BUCKET_NAME, file_name):
     copy_source = {
         'Bucket': FROM_BUCKET_NAME,
-        'Key': FILE_NAME
+        'Key': file_name
     }
-    s3_resource.Object(TO_BUCKET_NAME, FILE_NAME).copy(copy_source)
+    s3_resource.Object(TO_BUCKET_NAME, file_name).copy(copy_source)
 
-copy_to_bucket(FROM_BUCKET_NAME, TO_BUCKET_NAME, FILE_NAME)
+copy_to_bucket(FROM_BUCKET_NAME, TO_BUCKET_NAME, file_name)
 ```
+- Delete a file from a bucket `s3.Object(bucket_name, file_name).delete()`
 
-- `s3_resource.Object(BUCKET_NAME, FILE_NAME).delete()` to delete an object from a bucket
+#### Run Python file on EC2 instance
+- `scp -i ~/.ssh/DevOpsStudent.pem -r python.py ubuntu@public_ip:~/python.py` copy python.py from host to EC2
+- `sudo apt-get install python-pip` install python pip
+- `pip install boto3` install boto3
+- `python python.py` run python file
