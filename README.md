@@ -223,35 +223,36 @@ for bucket in s3.buckets.all():
 
 #### Using buckets
 - Create a bucket
-`s3_resource.create_bucket(Bucket='bucket_name', CreateBucketConfiguration={'LocationConstraint': 'PREFERRED_REGION'})`
+```
+s3_resource.create_bucket(Bucket='bucket_name', CreateBucketConfiguration={'LocationConstraint': 'PREFERRED_REGION'})
+```
+
 - Delete a bucket
-`s3.Bucket(bucket_name).delete()`
+```
+s3.Bucket(bucket_name).delete()
+```
 
 #### Using files
 - Upload a file to the bucket
 	- Using object instance
-
 	```
-	s3_resource.Object(bucket_name, file_name).upload_file(
-    	Filename=file_name)
+	s3_resource.Object(bucket_name, file_name).upload_file(Filename=file_name)
 	```
 
 	- Using a bucket instance
-
 	```
 	s3_resource.Bucket('bucket_name').upload_file(Filename=file_name, Key=file_name)
 	```
 
 	- Using a client instance
-
 	```
-	s3_resource.meta.client.upload_file(
-    	Filename=file_name, Bucket=bucket_name,
-    	Key=file_name)
+	s3_resource.meta.client.upload_file(Filename=file_name, Bucket=bucket_name, Key=file_name)
 	```
 
 - Download a file from the bucket
-`s3.Bucket(bucket_name).download_file(Filename=file_name, Key=file_name')`
+```
+s3.Bucket(bucket_name).download_file(Filename=file_name, Key=file_name')
+```
 
 - Copy an object from one bucket to another
 ```
@@ -264,7 +265,10 @@ def copy_to_bucket(FROM_BUCKET_NAME, TO_BUCKET_NAME, file_name):
 
 copy_to_bucket(FROM_BUCKET_NAME, TO_BUCKET_NAME, file_name)
 ```
-- Delete a file from a bucket `s3.Object(bucket_name, file_name).delete()`
+- Delete a file from a bucket
+```
+s3.Object(bucket_name, file_name).delete()
+```
 
 #### Run Python file on EC2 instance
 - `scp -i ~/.ssh/DevOpsStudent.pem -r python.py ubuntu@public_ip:~/python.py` copy python.py from host to EC2
